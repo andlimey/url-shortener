@@ -28,8 +28,6 @@ function App() {
             url : url,
             alias: alias
         }
-        console.log("Sending data")
-        console.log(data);
 
         try {
             let resp = await axios.post('http://localhost:5000/shortenUrl', data, {
@@ -37,7 +35,6 @@ function App() {
                     'Content-Type': 'application/json'
                 }
             });
-            console.log(resp.data);
             setShortUrl(resp.data.shortenedUrl)
             setHasShortUrl(true);
         } catch (err) {
