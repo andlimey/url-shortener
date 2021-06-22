@@ -22,19 +22,15 @@ app.use(function (req, res, next) {
 app.use(express.json()) // for parsing application/json
 
 app.get('/:shortUrl', async (request: any, response:any) => {
-    console.log(request.params.shortUrl);
     const original = await getActualUrl(db, request.params.shortUrl)
-    console.log(`Value retrieved is ${original}`);
 
     if (original.length === 0) {
         return response.status(404).json({ info: "No such alias exists" })
     }
-    console.log(`Redirecting to: ${original}`);
     return response.redirect(301, original);
 })
 
 app.post('/shortenUrl', (request: any, response: any, next: any) => {
-    console.log(request.body);
     let data: ShortenUrlReqBody = request.body
 
     if (!isValidUrl(data.url)) {

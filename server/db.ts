@@ -30,10 +30,8 @@ export async function addShortenedUrl(db: Database, shortUrl: string, original: 
 }
 
 export async function getActualUrl(db: Database, shortUrl: string): Promise<string> {
-    console.log(`In the db function with ${shortUrl}`);
     try {
         const result = await db.get(`SELECT original from url WHERE shortened = ?`, [shortUrl]);
-        console.log(`The row result is ${JSON.stringify(result)}`)
         return result.original;
     } catch(e) {
         console.log(e);
