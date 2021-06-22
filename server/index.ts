@@ -1,11 +1,11 @@
 import { initialiseTable, addShortenedUrl, getActualUrl } from "./db";
+import { isValidUrl, isUrlFriendly, generateAlias } from "./utils";
 import express from 'express';
-import Str from '@supercharge/strings';
 
 const app = express();
 
 const domain = "localhost"
-const port = 4000;
+const port = 5000;
 let db: any;
 
 interface ShortenUrlReqBody {
@@ -59,22 +59,3 @@ app.listen(port, async () => {
     db = await initialiseTable()
     console.log(`App running on port ${port}.`);
 });
-
-
-const isValidUrl = (url: string): boolean => {
-    const pattern = new RegExp(`((http|https)://)(www.)?` +  // Starts with http/https, followed by "://www."
-            `[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]` +    // Subdomain
-            `{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)`         // Top level domain
-        )
-    return !!pattern.test(url);
-}
-
-const isUrlFriendly = (alias: string): boolean => {
-    const pattern = new RegExp(`^[a-zA-Z0-9_-]*$`)
-
-    return pattern.test(alias);
-}
-
-const generateAlias = (): string => {
-    return Str.random(8)    // Randomly generates an alias of length 8
-}

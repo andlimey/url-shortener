@@ -32,7 +32,7 @@ function App() {
         console.log(data);
 
         try {
-            let resp = await axios.post('http://localhost:4000/shortenUrl', data, {
+            let resp = await axios.post('http://localhost:5000/shortenUrl', data, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
