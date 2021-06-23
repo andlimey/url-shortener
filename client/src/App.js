@@ -34,6 +34,7 @@ function App() {
             url: url,
             alias: alias,
         };
+        console.log(data);
 
         try {
             let resp = await axios.post(
@@ -62,6 +63,7 @@ function App() {
         >
             <Grid item xs={12} sm={12} md={8} lg={4}>
                 <Grid container direction="column" spacing={4}>
+                    <Grid item xs={12} sm={12} md={2} lg={2}></Grid>
                     <Grid item xs={12} sm={12} md={12} lg={12}>
                         <TextField
                             required
@@ -96,6 +98,7 @@ function App() {
                             Submit
                         </Button>
                     </Grid>
+
                     <Grid item xs={12} sm={12} md={12} lg={12}>
                         {hasShortUrl && (
                             <Card>
@@ -108,6 +111,8 @@ function App() {
                                 <CardActions>
                                     <Button
                                         size="small"
+                                        variant="contained"
+                                        color="primary"
                                         onClick={() =>
                                             navigator.clipboard.writeText(
                                                 shortUrl
@@ -116,7 +121,14 @@ function App() {
                                     >
                                         Copy
                                     </Button>
-                                    <Link href={shortUrl}>Head Over!</Link>
+                                    <Button
+                                        href={shortUrl}
+                                        size="small"
+                                        variant="contained"
+                                        color="default"
+                                    >
+                                        Head Over
+                                    </Button>
                                 </CardActions>
                             </Card>
                         )}
