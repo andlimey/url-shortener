@@ -69,7 +69,6 @@ app.get("/:shortUrl", function (request, response) { return __awaiter(void 0, vo
 }); });
 app.post("/shortenUrl", function (request, response, next) {
     var data = request.body;
-    console.log(data);
     if (!utils_1.isValidUrl(data.url)) {
         return response.status(400).json({ info: "Url given is not valid" });
     }
@@ -79,12 +78,7 @@ app.post("/shortenUrl", function (request, response, next) {
             .json({ info: "Alias given is not url-friendly" });
     }
     var alias = "";
-    if (data.alias) {
-        alias = data.alias;
-    }
-    else {
-        alias = utils_1.generateAlias();
-    }
+    data.alias ? (alias = data.alias) : (alias = utils_1.generateAlias());
     var result = db_1.addShortenedUrl(db, alias, data.url);
     if (!result) {
         return response.status(500).json({ info: "Could not fulfil request" });
