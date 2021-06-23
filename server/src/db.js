@@ -107,20 +107,16 @@ function getActualUrl(db, shortUrl) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    console.log("In the db function with " + shortUrl);
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, 3, , 4]);
+                    _a.trys.push([0, 2, , 3]);
                     return [4 /*yield*/, db.get("SELECT original from url WHERE shortened = ?", [shortUrl])];
-                case 2:
+                case 1:
                     result = _a.sent();
-                    console.log("The row result is " + JSON.stringify(result));
                     return [2 /*return*/, result.original];
-                case 3:
+                case 2:
                     e_3 = _a.sent();
                     console.log(e_3);
                     return [2 /*return*/, ""];
-                case 4: return [2 /*return*/];
+                case 3: return [2 /*return*/];
             }
         });
     });

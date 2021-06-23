@@ -40,11 +40,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var db_1 = require("./db");
+var utils_1 = require("./utils");
 var express_1 = __importDefault(require("express"));
-var strings_1 = __importDefault(require("@supercharge/strings"));
 var app = express_1.default();
 var domain = "localhost";
-var port = 4000;
+var port = 5000;
 var db;
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -57,30 +57,25 @@ app.get('/:shortUrl', function (request, response) { return __awaiter(void 0, vo
     var original;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0:
-                console.log(request.params.shortUrl);
-                return [4 /*yield*/, db_1.getActualUrl(db, request.params.shortUrl)];
+            case 0: return [4 /*yield*/, db_1.getActualUrl(db, request.params.shortUrl)];
             case 1:
                 original = _a.sent();
-                console.log("Value retrieved is " + original);
                 if (original.length === 0) {
                     return [2 /*return*/, response.status(404).json({ info: "No such alias exists" })];
                 }
-                console.log("Redirecting to: " + original);
                 return [2 /*return*/, response.redirect(301, original)];
         }
     });
 }); });
 app.post('/shortenUrl', function (request, response, next) {
-    console.log(request.body);
     var data = request.body;
-    if (!isValidUrl(data.url)) {
+    if (!utils_1.isValidUrl(data.url)) {
         return response.status(400).json({ info: "Url given is not valid" });
     }
-    if (data.alias && !isUrlFriendly(data.alias)) {
+    if (data.alias && !utils_1.isUrlFriendly(data.alias)) {
         return response.status(400).json({ info: "Alias given is not url-friendly" });
     }
-    var alias = generateAlias();
+    var alias = utils_1.generateAlias();
     var result = db_1.addShortenedUrl(db, alias, data.url);
     if (!result) {
         return response.status(500).json({ info: "Could not fulfil request" });
@@ -98,17 +93,3 @@ app.listen(port, function () { return __awaiter(void 0, void 0, void 0, function
         }
     });
 }); });
-var isValidUrl = function (url) {
-    var pattern = new RegExp("((http|https)://)(www.)?" + // Starts with http/https, followed by "://www."
-        "[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]" + // Subdomain
-        "{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)" // Top level domain
-    );
-    return !!pattern.test(url);
-};
-var isUrlFriendly = function (alias) {
-    var pattern = new RegExp("^[a-zA-Z0-9_-]*$");
-    return pattern.test(alias);
-};
-var generateAlias = function () {
-    return strings_1.default.random(8); // Randomly generates an alias of length 8
-};
