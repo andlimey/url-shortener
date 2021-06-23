@@ -46,8 +46,8 @@ function openDb() {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
             return [2 /*return*/, sqlite_1.open({
-                    filename: '/tmp/database.db',
-                    driver: sqlite3_1.default.Database
+                    filename: "/tmp/database.db",
+                    driver: sqlite3_1.default.Database,
                 })];
         });
     });
@@ -87,7 +87,10 @@ function addShortenedUrl(db, shortUrl, original) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, db.run("INSERT INTO url(shortened, original) VALUES(?, ?)", [shortUrl, original])];
+                    return [4 /*yield*/, db.run("INSERT INTO url(shortened, original) VALUES(?, ?)", [
+                            shortUrl,
+                            original,
+                        ])];
                 case 1:
                     _a.sent();
                     return [2 /*return*/, true];

@@ -49,7 +49,8 @@ app.post("/shortenUrl", (request: any, response: any, next: any) => {
             .json({ info: "Alias given is not url-friendly" });
     }
 
-    const alias = generateAlias();
+    let alias = "";
+    data.alias ? (alias = data.alias) : (alias = generateAlias());
     const result = addShortenedUrl(db, alias, data.url);
 
     if (!result) {

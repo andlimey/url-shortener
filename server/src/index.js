@@ -47,13 +47,13 @@ var domain = "localhost";
 var port = 5000;
 var db;
 app.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
     next();
 });
 app.use(express_1.default.json()); // for parsing application/json
-app.get('/:shortUrl', function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("/:shortUrl", function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
     var original;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -67,20 +67,31 @@ app.get('/:shortUrl', function (request, response) { return __awaiter(void 0, vo
         }
     });
 }); });
-app.post('/shortenUrl', function (request, response, next) {
+app.post("/shortenUrl", function (request, response, next) {
     var data = request.body;
+    console.log(data);
     if (!utils_1.isValidUrl(data.url)) {
         return response.status(400).json({ info: "Url given is not valid" });
     }
     if (data.alias && !utils_1.isUrlFriendly(data.alias)) {
-        return response.status(400).json({ info: "Alias given is not url-friendly" });
+        return response
+            .status(400)
+            .json({ info: "Alias given is not url-friendly" });
     }
-    var alias = utils_1.generateAlias();
+    var alias = "";
+    if (data.alias) {
+        alias = data.alias;
+    }
+    else {
+        alias = utils_1.generateAlias();
+    }
     var result = db_1.addShortenedUrl(db, alias, data.url);
     if (!result) {
         return response.status(500).json({ info: "Could not fulfil request" });
     }
-    return response.status(200).json({ shortenedUrl: "http://" + domain + ":" + port + "/" + alias });
+    return response
+        .status(200)
+        .json({ shortenedUrl: "http://" + domain + ":" + port + "/" + alias });
 });
 app.listen(port, function () { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
